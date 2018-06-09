@@ -45,7 +45,7 @@ def find_sql(list_of_files, input_string):
     local_list = []
     if len(list_of_files) == 0:
 
-        for d, dirs, files in os.walk(current_dir):  # Просматриваем каталог
+        for d, dirs, files in os.walk(os.path.join(current_dir,migrations):  # Просматриваем каталог
             for file in files:  # идем по каждому файлу
                 path = os.path.join(d, file)  # формирование полного пути файла
                 if file.find('.sql') != -1:
