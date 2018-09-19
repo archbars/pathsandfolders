@@ -41,40 +41,38 @@ migrations = 'Migrations'
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
+def open_file_and_find_keyword(file, input_string, local_list):
+    with open(file, 'r') as current_file:
+        for line in current_file:
+            if input_string in line:
+                print(file)
+                local_list.append(file)
+                break
+    return local_list
+
+
 def find_sql(list_of_files, input_string):
     local_list = []
     if len(list_of_files) == 0:
-
-        for d, dirs, files in os.walk(os.path.join(current_dir,migrations):  # Просматриваем каталог
+        for d, dirs, files in os.walk(os.path.join(current_dir, migrations)):  # Просматриваем каталог
             for file in files:  # идем по каждому файлу
                 path = os.path.join(d, file)  # формирование полного пути файла
-                if file.find('.sql') != -1:
-                    current_file = open(str(path), 'r')
-                    for line in current_file:
-                        if line.find(input_string) != -1:
-                            print(path)
-                            local_list.append(path)
-                            break  # после нахождения выходим из цикла по файлу
+                if path.endswith('.sql'):
+                    local_list = open_file_and_find_keyword(str(path), input_string, local_list)
     else:
-        for i in range(len(list_of_files)):
-            current_file=open(list_of_files[i],'r')
-            for line in current_file:
-                if line.find(input_string) != -1:
-                    print(list_of_files[i])
-                    local_list.append(list_of_files[i])
-                    break
+        for file in list_of_files:
+            local_list = open_file_and_find_keyword(file, input_string, local_list)
+
     print("Всего: ", len(local_list))
     return local_list
 
 
 def start_func():
-    i = 1  # для организации бесконечного цикла
     local_list = []
-    while i == 1:
+    while True:
         key = input("Введите строку для поиска: ")
-        local_list = find_sql(local_list,key)
+        local_list = find_sql(local_list, key)
 
 
 if __name__ == '__main__':
     start_func()
-    pass
